@@ -64,7 +64,7 @@ if letters_train == letters_val:
     print('Letters in train and val do match')
 else:
     raise Exception()
-# print(len(letters_train), len(letters_val), len(letters_val | letters_train))
+
 letters = sorted(list(letters_train))
 print('Letters:', ' '.join(letters))
 
@@ -125,8 +125,7 @@ class TextImageGenerator:
             img = cv2.resize(img, (self.img_w, self.img_h))
             img = img.astype(np.float32)
             img /= 255
-            # width and height are backwards from typical Keras convention
-            # because width is the time dimension when it gets fed into the RNN
+          
             self.imgs[i, :, :] = img
             self.texts.append(text)
         
@@ -142,8 +141,7 @@ class TextImageGenerator:
     
     def next_batch(self):
         while True:
-            # width and height are backwards from typical Keras convention
-            # because width is the time dimension when it gets fed into the RNN
+        
             if K.image_data_format() == 'channels_first':
                 X_data = np.ones([self.batch_size, 1, self.img_w, self.img_h])
             else:
@@ -244,8 +242,7 @@ def train(img_w, load=False):
     # cuts down input size going into RNN:
     inner = Dense(time_dense_size, activation=act, name='dense1')(inner)
 
-    # Two layers of bidirecitonal GRUs
-    # GRU seems to work as well, if not better than LSTM:
+
     gru_1 = GRU(rnn_size, return_sequences=True, kernel_initializer='he_normal', name='gru1')(inner)
     gru_1b = GRU(rnn_size, return_sequences=True, go_backwards=True, kernel_initializer='he_normal', name='gru1_b')(inner)
     gru1_merged = add([gru_1, gru_1b])
@@ -344,8 +341,7 @@ for inp_value, _ in tiger_test.next_batch():
         ax2.grid(False)
         for h in np.arange(-0.5, len(letters) + 1 + 0.5, 1):
             ax2.axhline(h, linestyle='-', color='k', alpha=0.5, linewidth=1)
-        
-        #ax.axvline(x, linestyle='--', color='k')
+     
         plt.show()
     break
 
